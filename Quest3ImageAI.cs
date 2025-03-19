@@ -27,12 +27,14 @@ public class Quest3ImageAI : MonoBehaviour
     private float lastRequestTime;
 
     [SerializeField]
-    private string defaultAsking = "画像の内容を分析し、面白い解説をしてください。", receipeAsking = "画像にある物で作れそうなレシピを教えてください。";
+    private string defaultAsking, receipeAsking;
 
     private bool recipemode = false;
 
     [SerializeField]
     private GameObject recipesign;
+
+    private bool bootCamera = false;
 
     void Start()
     {
@@ -57,7 +59,21 @@ public class Quest3ImageAI : MonoBehaviour
             Graphics.Blit(webCamTexture, displayImage);
         }
 
-        if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger) && Time.time - lastRequestTime > requestInterval)
+        //初回カメラが間に合ってない？のでもう一回Play()
+        if (!bootCamera)
+        {
+            if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
+            {
+                webCamTexture.Play();
+            }
+
+            if (OVRInput.GetUp(OVRInput.RawButton.RIndexTrigger))
+            {
+                bootCamera = true;
+            }
+        }
+
+        if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger) && Time.time - lastRequestTime > requestInterval && bootCamera)
         {
             if (!isProcessing)
             {
