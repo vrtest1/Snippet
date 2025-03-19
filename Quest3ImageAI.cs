@@ -21,13 +21,13 @@ public class Quest3ImageAI : MonoBehaviour
     [SerializeField] private int targetHeight = 480;
     [SerializeField] private int maxTokens = 300;
     [SerializeField] private float requestInterval = 3.0f;
-    [SerializeField] private float minProcessTime = 1.0f; // Å’áˆ—ŠÔ
+    [SerializeField] private float minProcessTime = 1.0f; // æœ€ä½å‡¦ç†æ™‚é–“
 
     private bool isProcessing = false;
     private float lastRequestTime;
 
     [SerializeField]
-    private string defaultAsking, receipeAsking;
+    private string defaultAsking = "ç”»åƒã®å†…å®¹ã‚’åˆ†æã—ã€é¢ç™½ã„è§£èª¬ã‚’ã—ã¦ãã ã•ã„ã€‚", receipeAsking = "ç”»åƒã«ã‚ã‚‹ç‰©ã§ä½œã‚Œãã†ãªãƒ¬ã‚·ãƒ”ã‚’æ•™ãˆã¦ãã ã•ã„ã€‚";
 
     private bool recipemode = false;
 
@@ -69,7 +69,7 @@ public class Quest3ImageAI : MonoBehaviour
                     StartCoroutine(CaptureAndAnalyze());
                     webCamTexture.Pause();
                     targetObj.transform.localScale = new Vector3(2, 2, 2);
-                    responseText.text = "•ªÍ’†...";
+                    responseText.text = "åˆ†æä¸­...";
                 }
                 else
                 {
@@ -85,7 +85,7 @@ public class Quest3ImageAI : MonoBehaviour
 
         if (OVRInput.GetDown(OVRInput.RawButton.A))
         {
-            //Debug.Log("Aƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½");
+            //Debug.Log("Aãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸ");
             recipemode = !recipemode;
 
             if (recipemode)
@@ -131,7 +131,7 @@ public class Quest3ImageAI : MonoBehaviour
             yield return StartCoroutine(SendToChatGPT(base64Image, receipeAsking));
         }
 
-        // Å’áˆ—ŠÔ‚Ì•ÛØ
+        // æœ€ä½å‡¦ç†æ™‚é–“ã®ä¿è¨¼
         float elapsed = Time.time - startTime;
         if (elapsed < minProcessTime)
         {
@@ -192,12 +192,12 @@ public class Quest3ImageAI : MonoBehaviour
                 }
                 else
                 {
-                    responseText.text = "—LŒø‚ÈƒŒƒXƒ|ƒ“ƒX‚ª‚ ‚è‚Ü‚¹‚ñ‚Å‚µ‚½";
+                    responseText.text = "æœ‰åŠ¹ãªãƒ¬ã‚¹ãƒãƒ³ã‚¹ãŒã‚ã‚Šã¾ã›ã‚“ã§ã—ãŸ";
                 }
             }
             else
             {
-                string errorMessage = $"ƒGƒ‰[: {www.error}\nƒŒƒXƒ|ƒ“ƒX: {www.downloadHandler.text}";
+                string errorMessage = $"ã‚¨ãƒ©ãƒ¼: {www.error}\nãƒ¬ã‚¹ãƒãƒ³ã‚¹: {www.downloadHandler.text}";
                 Debug.LogError(errorMessage);
                 responseText.text = errorMessage;
             }
